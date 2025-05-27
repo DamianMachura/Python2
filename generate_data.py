@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 
 class DataGenerator:
-    def __init__(self, num_samples=100):
+    def __init__(self, num_samples=10000):
         self.num_samples = num_samples
         self.imiona = ["Jan", "Anna", "Piotr", "Katarzyna", "Marek", "Maria", "Tomasz", "Agnieszka", "Paweł", "Joanna"]
         self.nazwiska = ["Kowalski", "Nowak", "Wiśniewski", "Wójcik", "Kamiński", "Lewandowski", "Zieliński", "Szymański", "Dąbrowski", "Woźniak"]
@@ -15,6 +15,7 @@ class DataGenerator:
         data = {
             "Imię": [random.choice(self.imiona) for _ in range(self.num_samples)],
             "Nazwisko": [random.choice(self.nazwiska) for _ in range(self.num_samples)],
+            "id":[f'P{str(i).zfill(5)}' for i in range(1,self.num_samples + 1)],
             "Miasto": [random.choice(self.miasta) for _ in range(self.num_samples)],
             "Wynik": [random.randint(50, 100) for _ in range(self.num_samples)]
         }
@@ -36,6 +37,18 @@ class DataHandler:
 class DataVisualizer:
     def __init__(self, df):
         self.df = df
+
+    def visualise_Data(self):
+        kolumna = df.select_dtypes(include=['object']).columns
+        fig = plt.figure(figsize=(25,40))
+        for i, cecha in enumerate(kolumna):
+            ax = fig.add_subplot(5,3, i+1)
+            ax.set_title(cecha)
+            (df[cecha].value_counts()/len(df[cecha])).plot.bar()
+            ax.set(ylabel="%")
+        plt.subplots_adjust
+
+
     
     def plot_top_results(self, top_n=10):
         df_sorted = self.df.sort_values(by="Wynik", ascending=False)
@@ -74,5 +87,6 @@ if __name__ == "__main__":
     df_read = handler.read_from_excel()
     
     visualizer = DataVisualizer(df_read)
+    visualizer.visualise_Data()
     visualizer.plot_top_results()
     visualizer.plot_interpolation()

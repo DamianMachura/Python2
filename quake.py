@@ -46,9 +46,9 @@ SCALE = WIDTH // 120  # Liczba promieni
 
 class Bullet:
     def __init__(self, x, y, angle):
-        self.x = x
+        self.x = x 
         self.y = y
-        self.angle = angle
+        self.angle = math.atan2(300 - y, 400 - x)
         self.speed = 5  
         self.active = True
 
@@ -131,7 +131,6 @@ class Raycaster:
             for depth in range(1, self.player._max_depth * TILE_SIZE, 5):
                 target_x = self.player.get_position()[0] * TILE_SIZE + depth * cos_a
                 target_y = self.player.get_position()[1] * TILE_SIZE + depth * sin_a
-
                 col, row = int(target_x / TILE_SIZE), int(target_y / TILE_SIZE)
                 if 0 <= row < len(self.map_data) and 0 <= col < len(self.map_data[0]) and self.map_data[row][col] == 1:
                     depth *= math.cos(self.player.get_angle() - angle)  # Korekta dystansu
