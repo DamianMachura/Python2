@@ -3,6 +3,7 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
+from sklearn.linear_model import LinearRegression
 
 class DataGenerator:
     def __init__(self, num_samples=10000):
@@ -76,17 +77,32 @@ class DataVisualizer:
         plt.title("Interpolacja wyników")
         plt.show()
 
+class MachineLearning:
+    def __init__(self, arr):
+        self.arr = arr
+    def machoneLearning(self):
+        X = np.array([[1], [2], [3], [4], [5]])
+        y = np.array([2, 4, 6, 8, 10])
+
+        # Model
+        model = LinearRegression()
+        model.fit(X, y)
+
+        # Predykcja
+        print(f"iteracja kolejnych wartości: {X} \n Wartości do szkolenia: {y} \n Model prediction dla wartości 6.: {model.predict([[6]])}")
 
 if __name__ == "__main__":
-    generator = DataGenerator()
-    df = generator.generate_data()
+    # generator = DataGenerator()
+    # df = generator.generate_data()
     
-    handler = DataHandler()
-    handler.save_to_excel(df)
+    # handler = DataHandler()
+    # handler.save_to_excel(df)
     
-    df_read = handler.read_from_excel()
+    # df_read = handler.read_from_excel()
     
-    visualizer = DataVisualizer(df_read)
-    visualizer.visualise_Data()
-    visualizer.plot_top_results()
-    visualizer.plot_interpolation()
+    # visualizer = DataVisualizer(df_read)
+    # visualizer.visualise_Data()
+    # visualizer.plot_top_results()
+    # visualizer.plot_interpolation()
+    learning = MachineLearning("arr")
+    learning.machoneLearning()
