@@ -11,14 +11,17 @@ class DataGenerator:
         self.imiona = ["Jan", "Anna", "Piotr", "Katarzyna", "Marek", "Maria", "Tomasz", "Agnieszka", "Paweł", "Joanna"]
         self.nazwiska = ["Kowalski", "Nowak", "Wiśniewski", "Wójcik", "Kamiński", "Lewandowski", "Zieliński", "Szymański", "Dąbrowski", "Woźniak"]
         self.miasta = ["Warszawa", "Kraków", "Gdańsk", "Wrocław", "Poznań", "Łódź", "Szczecin", "Lublin", "Katowice", "Bydgoszcz"]
+        self.ocena = [1, 2, 3, 4, 5]
+        self.wagi = [0.05, 0.2, 0.2, 0.1, 0.05, 0.02, 0.08, 0.1, 0.03, 0.17]
     
     def generate_data(self):
         data = {
-            "Imię": [random.choice(self.imiona) for _ in range(self.num_samples)],
-            "Nazwisko": [random.choice(self.nazwiska) for _ in range(self.num_samples)],
+            "Imię": [random.choices(self.imiona, weights=self.wagi, k=1) for _ in range(self.num_samples)],
+            "Nazwisko": [random.choices(self.nazwiska, weights=self.wagi) for _ in range(self.num_samples)],
             "id":[f'P{str(i).zfill(5)}' for i in range(1,self.num_samples + 1)],
-            "Miasto": [random.choice(self.miasta) for _ in range(self.num_samples)],
-            "Wynik": [random.randint(50, 100) for _ in range(self.num_samples)]
+            "Miasto": [random.choices(self.miasta, weights=self.wagi) for _ in range(self.num_samples)],
+            "Ocena_Koncowa" : [random.choices(self.ocena, self.wagi[:5]) for _ in range(self.num_samples)],
+            "Wynik_Egzaminu": [random.randint(50, 100) for _ in range(self.num_samples)]
         }
         return pd.DataFrame(data)
 
@@ -43,7 +46,7 @@ class DataVisualizer:
         kolumna = df.select_dtypes(include=['object']).columns
         fig = plt.figure(figsize=(25,40))
         for i, cecha in enumerate(kolumna):
-            ax = fig.add_subplot(5,3, i+1)
+            ax = fig.add_subplot(3,2, i+1)
             ax.set_title(cecha)
             (df[cecha].value_counts()/len(df[cecha])).plot.bar()
             ax.set(ylabel="%")
@@ -52,9 +55,9 @@ class DataVisualizer:
 
     
     def plot_top_results(self, top_n=10):
-        df_sorted = self.df.sort_values(by="Wynik", ascending=False)
+        df_sorted = self.df.sort_values(by="Wynik_Egzaminu", ascending=False)
         plt.figure(figsize=(10, 5))
-        plt.bar(df_sorted["Nazwisko"].head(top_n), df_sorted["Wynik"].head(top_n), color='blue')
+        plt.bar(df_sorted["Nazwisko"].head(top_n), df_sorted["Wynik_Egzaminu"].head(top_n), color='blue')
         plt.xlabel("Nazwisko")
         plt.ylabel("Wynik")
         plt.title(f"Top {top_n} wyników")
@@ -92,17 +95,17 @@ class MachineLearning:
         print(f"iteracja kolejnych wartości: {X} \n Wartości do szkolenia: {y} \n Model prediction dla wartości 6.: {model.predict([[6]])}")
 
 if __name__ == "__main__":
-    # generator = DataGenerator()
-    # df = generator.generate_data()
+    generator = DataGenerator()
+    df = generator.generate_data()
     
-    # handler = DataHandler()
-    # handler.save_to_excel(df)
+    handler = DataHandler()
+    handler.save_to_excel(df)
     
-    # df_read = handler.read_from_excel()
+    df_read = handler.read_from_excel()
     
-    # visualizer = DataVisualizer(df_read)
-    # visualizer.visualise_Data()
-    # visualizer.plot_top_results()
-    # visualizer.plot_interpolation()
+    visualizer = DataVisualizer(df_read)
+    visualizer.visualise_Data()
+    visualizer.plot_top_results()
+    visualizer.plot_interpolation()
     learning = MachineLearning("arr")
     learning.machoneLearning()
