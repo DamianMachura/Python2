@@ -20,6 +20,11 @@ class DataGenerator:
             "Nazwisko": [random.choices(self.nazwiska, weights=self.wagi) for _ in range(self.num_samples)],
             "id":[f'P{str(i).zfill(5)}' for i in range(1,self.num_samples + 1)],
             "Miasto": [random.choices(self.miasta, weights=self.wagi) for _ in range(self.num_samples)],
+            "ocena_1":[random.choices(self.ocena, weights=self.wagi[::2]) for _ in range(self.num_samples)],
+            "ocena_2":[random.choices(self.ocena, weights=self.wagi[2:-3]) for _ in range(self.num_samples)],
+            "ocena_3":[random.choices(self.ocena, weights=self.wagi[:-5]) for _ in range(self.num_samples)],
+            "ocena_4":[random.choices(self.ocena, weights=self.wagi[5:]) for _ in range(self.num_samples)],
+            "ocena_5":[random.choices(self.ocena, weights=self.wagi[::2]) for _ in range(self.num_samples)],
             "Ocena_Koncowa" : [random.choices(self.ocena, self.wagi[:5]) for _ in range(self.num_samples)],
             "Wynik_Egzaminu": [random.randint(50, 100) for _ in range(self.num_samples)]
         }
@@ -46,7 +51,7 @@ class DataVisualizer:
         kolumna = df.select_dtypes(include=['object']).columns
         fig = plt.figure(figsize=(25,40))
         for i, cecha in enumerate(kolumna):
-            ax = fig.add_subplot(3,2, i+1)
+            ax = fig.add_subplot(3,4, i+1)
             ax.set_title(cecha)
             (df[cecha].value_counts()/len(df[cecha])).plot.bar()
             ax.set(ylabel="%")
