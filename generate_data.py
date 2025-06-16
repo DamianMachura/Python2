@@ -95,19 +95,19 @@ class MachineLearning:
         self.arr = arr
     def machoneLearning(self):
         X, y = self.arr.drop(['Wynik_Egzaminu'], axis=1), self.arr["Wynik_Egzaminu"]
-        X_test = X_test = pd.DataFrame([{
-                                        "Imię": "Piotr",
-                                        "Nazwisko": "Kamiński",
-                                        "id": "P12345",
-                                        "Miasto": "Kraków",
-                                        "kwartal" : 1,
-                                        "ocena_1": 2,
-                                        "ocena_2": 3,
-                                        "ocena_3": 4,
-                                        "ocena_4": 5,
-                                        "ocena_5": 2,
-                                        "Ocena_Koncowa" : 3
-                                    }])
+        X_test = pd.DataFrame([{
+                                "Imię": "Piotr",
+                                "Nazwisko": "Kamiński",
+                                "id": "P12345",
+                                "Miasto": "Kraków",
+                                "kwartal" : 1,
+                                "ocena_1": 2,
+                                "ocena_2": 3,
+                                "ocena_3": 4,
+                                "ocena_4": 5,
+                                "ocena_5": 2,
+                                "Ocena_Koncowa" : 3
+                            }])
         # dobur kolumn 
         dane_tekstowe = ["Imię", "Nazwisko","id", "Miasto"]
         numeryczne = [col for col in X.columns if col not in dane_tekstowe]
