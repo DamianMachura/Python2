@@ -5,14 +5,14 @@ import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 
-Transform = transforms.compose([transforms.ToTensor()])
+Transform = transforms.Compose([transforms.ToTensor()])
 
 
-train_dataset = torchVision.datasets.FasionMINST(root='./data', train=True, download=True, transmorm=transform)
-test_dataset = torchvision.datasets.FashionMNIST(root='./data', train=False, download=True, transform=transform)
+train_dataset = torchvision.datasets.FashionMNIST(root='./data', train=True, download=True, transform=Transform)
+test_dataset = torchvision.datasets.FashionMNIST(root='./data', train=False, download=True, transform=Transform)
 
 
-train_loader = DataLoader(trein_dataset, batch_size=64, shuffle=True)
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
 class NeuralNet(nn.Module):
@@ -21,6 +21,8 @@ class NeuralNet(nn.Module):
         self.flatten = nn.Flatten()
         self.model = nn.Sequential(
             nn.Linear(28*28, 128),
+            nn.ReLU(),
+            nn.Linear(128,64),
             nn.ReLU(),
             nn.Linear(64,10)
         )
@@ -31,7 +33,7 @@ class NeuralNet(nn.Module):
 model = NeuralNet()
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parametrs(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 numbers = 5
 
@@ -42,7 +44,7 @@ for number in range(numbers):
         outputs = model(images)
         loss = criterion(outputs, labels)
 
-        loss.backword()
+        loss.backward()
         optimizer.step()
         running_loss += loss.item()
     print(f"Loss: {running_loss/len(train_loader)}")
@@ -55,6 +57,6 @@ with torch.no_grad():
         outputs = model(images)
         _, predictes = torch.max(outputs,1)
         total += labels.size(0)
-        correct += (predicted == labels).sum().item()
+        correct += (predictes == labels).sum().item()
 
 print(f"Accuracy on test: {100*correct / total:.2f}%")
