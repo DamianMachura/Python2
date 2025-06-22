@@ -41,12 +41,7 @@ numbers = 5
 for number in range(numbers):
     running_loss = 0.0
     for images, labels in train_loader:
-        for i in range(1, 11):
-            plt.subplot(1, 10, i)
-            plt.axis('off')
-            plt.imshow(images[i-1], cmap='gray_r')
-            plt.title(labels[i-1], color='black', fontsize=16)
-            plt.show()
+        
         optimizer.zero_grad()
         outputs = model(images)
         loss = criterion(outputs, labels)
@@ -55,9 +50,15 @@ for number in range(numbers):
         optimizer.step()
         running_loss += loss.item()
     print(f"Loss: {running_loss/len(train_loader)}")
+for i in range(1, 101):
+    plt.subplot(10, 10, i)
+    plt.axis('off')
+    plt.imshow(images[i-1][0], cmap='gray_r')
+    plt.title(labels[i-1], color='black', fontsize=8)
+plt.show()
 
-    correct = 0
-    total = 0
+correct = 0
+total = 0
 
 with torch.no_grad():
     for images, labels in test_loader: 
