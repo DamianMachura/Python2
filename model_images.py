@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -40,6 +41,12 @@ numbers = 5
 for number in range(numbers):
     running_loss = 0.0
     for images, labels in train_loader:
+        for i in range(1, 11):
+            plt.subplot(1, 10, i)
+            plt.axis('off')
+            plt.imshow(images[i-1], cmap='gray_r')
+            plt.title(labels[i-1], color='black', fontsize=16)
+            plt.show()
         optimizer.zero_grad()
         outputs = model(images)
         loss = criterion(outputs, labels)
@@ -53,7 +60,7 @@ for number in range(numbers):
     total = 0
 
 with torch.no_grad():
-    for images, labels in test_loader:
+    for images, labels in test_loader: 
         outputs = model(images)
         _, predictes = torch.max(outputs,1)
         total += labels.size(0)
