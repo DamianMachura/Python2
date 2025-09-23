@@ -11,6 +11,8 @@ Zbiór moich ćwiczeń i skryptów w Pythonie — nauka oraz realizacja małych 
 - Python 3.8+ (repozytorium było rozwijane na Pythonie 3) można użyć docker jeśli system się nie zawiesi ;)
 - `pip` oraz wirtualne środowisko (opcjonalnie)
 - Biblioteki wymienione w `requirements.txt` (jeśli dodasz plik)
+## Cel projektu
+- celem projektu jest stworzenie skryptu ML który uczył by się rozpoznawania kształtu/typu obiektu na podstawie danych pobranych z DDRAM, dane te są binarnym zapisem odległości zmierzonymi czujnikiem ultradźwiękowym w układzie na FPGA
 
 ## Instalacja i uruchomienie
 ```bash
